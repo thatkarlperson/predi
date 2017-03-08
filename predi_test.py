@@ -3,6 +3,7 @@
 import unittest
 import predi
 
+
 class PrediTest(unittest.TestCase):
     def testMarket(self):
         m = predi.Market('The ponies will pwn!', 0.5)

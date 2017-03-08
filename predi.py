@@ -16,10 +16,12 @@ RESOLVED = object()
 class Error(Exception):
     '''Something went wrong.'''
 
+
 class BidError(Error):
     '''A probability was out of range.
-    
+
     Code should handle bid errors by rejecting the bid.'''
+
 
 class MarketError(Error):
     '''A market value (e.g. outcome) was out of range.'''
@@ -41,7 +43,7 @@ class Market(object):
 
     def Bid(self, player, bid):
         '''Add a bid that the outcome is true.  Bids are floats in (0, 1).'
-        
+
         A bid indicates a player's belief that the outcome is true, so 1-bid
         is their belief the outcome is false.
         '''
@@ -59,7 +61,7 @@ class Market(object):
 
     def LastBid(self):
         '''Return the most recent bid.
-        
+
         Returns: (player, bid)
         '''
         return self.bids[-1]
@@ -91,5 +93,3 @@ class Market(object):
             self.results[player] += score
             curBid = bid
         return self.results
-
-
