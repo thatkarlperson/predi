@@ -30,7 +30,7 @@ class Market(object):
     '''A Market represents a proposition with two outcomes.
 
     A Market can be in three states: OPEN, CLOSED, or RESOLVED.
-    If it is OPEN, it can accept Bids.  If it is CLOSED, it can't.
+    If it is OPEN, it can accept bids.  If it is CLOSED, it can't.
     Moving it to RESOLVED requires telling it which outcome was true.
     '''
     def __init__(self, name, house):
@@ -40,10 +40,11 @@ class Market(object):
         self.results = collections.defaultdict(float)  # will be player->centibits
 
     def Bid(self, player, bid):
-        '''Add a bid that the outcome is true.  Bids are floats in [0,1].'
+        '''Add a bid that the outcome is true.  Bids are floats in (0, 1).'
         
         A bid indicates a player's belief that the outcome is true, so 1-bid
-        is their belief the outcome is false.'''
+        is their belief the outcome is false.
+        '''
         if player == 'House':
             raise BidError("House can't raise new bids.")
         if bid <= 0 or bid >= 1:
@@ -53,9 +54,29 @@ class Market(object):
         self.bids.append((player, bid))
 
     def Close(self):
+        '''Close the market to new bids.'''
         self.state = CLOSED
 
+    def LastBid(self):
+        '''Return the most recent bid.
+        
+        Returns: (player, bid)
+        '''
+        return self.bids[-1]
+
+    def BidHistory(self):
+        '''Return the bid history, with the most recent bid last.
+
+        Returns: [(player, bid), ...]
+        '''
+        return self.bids
+
     def Resolve(self, outcome):
+        '''Resolve the market given a true or false outcome.
+
+        This calculates each player's score in centibits of information
+        contributed to the market.
+        '''
         self.state = RESOLVED
         if outcome not in (True, False):
             raise MarketError('Markets must resolve as true or false for now.')
@@ -69,6 +90,6 @@ class Market(object):
             score = 100 * (logProb - logProbLast)
             self.results[player] += score
             curBid = bid
-
+        return self.results
 
 
