@@ -1,0 +1,13 @@
+<!doctype html>
+<title>Market - {{ market.name }}</title>
+<div class="market-{{ market.state }}">
+	<h2 class="market-name">{{ market.name }}</h2>
+	<ol>
+	{% for bid in market.bids %}
+		<li>
+			<span class="bid-name">{{ bid[0] }}</span>
+			<span class="bid-value">{{ bid[1] }}</span>
+		</li>
+	{% endfor %}
+	</ol>
+</div>
