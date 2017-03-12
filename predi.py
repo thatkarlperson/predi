@@ -7,9 +7,9 @@ import collections
 
 
 # Constants
-OPEN = object()
-CLOSED = object()
-RESOLVED = object()
+OPEN = "open"
+CLOSED = "closed"
+RESOLVED = "resolved"
 
 
 # Exception classes
