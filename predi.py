@@ -1,4 +1,4 @@
-#!/bin/env python3
+#!/usr/bin/env python3
 #
 # Infra for prediction markets
 
@@ -27,7 +27,6 @@ class MarketError(Error):
     '''A market value (e.g. outcome) was out of range.'''
 
 
-# A Market.
 class Market(object):
     '''A Market represents a proposition with two outcomes.
 
@@ -39,7 +38,8 @@ class Market(object):
         self.name = name
         self.state = OPEN
         self.bids = [('House', house)]  # will be (player, bid)
-        self.results = collections.defaultdict(float)  # will be player->centibits
+        self.results = collections.defaultdict(float)
+        # results will be player->centibits, populated only at resolution
 
     def Bid(self, player, bid):
         '''Add a bid that the outcome is true.  Bids are floats in (0, 1).'
@@ -78,17 +78,25 @@ class Market(object):
 
         This calculates each player's score in centibits of information
         contributed to the market.
+
+        Returns: dict-like object of player->score
         '''
+        if self.state is RESOLVED:
+            raise MarketError("Can't resolve a market twice.")
         self.state = RESOLVED
         if outcome not in (True, False):
             raise MarketError('Markets must resolve as true or false for now.')
         # If the outcome was false, invert the sense of all bids.
-        correctBids = iter(self.bids) if outcome else ((player, 1-bid) for (player, bid) in self.bids)
-        (_, curBid) = next(correctBids)  # starts with house bid
+        correctBids = iter(self.bids) if outcome \
+            else ((player, 1-bid) for (player, bid) in self.bids)
+
         # Add up player scores.
+        (_, lastBid) = next(correctBids)  # starts with house bid
         for (player, bid) in correctBids:
+            # Score for a correct bid is the difference in log probability
+            # from the preceding bid, in centibits.
             logProb = math.log(bid, 2)
-            logProbLast = math.log(curBid, 2)
+            logProbLast = math.log(lastBid, 2)
             score = 100 * (logProb - logProbLast)
             self.results[player] += score
             curBid = bid
