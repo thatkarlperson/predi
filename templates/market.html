@@ -2,12 +2,18 @@
 <title>Market - {{ market.name }}</title>
 <div class="market-{{ market.state }}">
 	<h2 class="market-name">{{ market.name }}</h2>
-	<ol>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>T</th>
+			<th>F</th>
+		</tr>
 	{% for bid in market.bids %}
-		<li>
-			<span class="bid-name">{{ bid[0] }}</span>
-			<span class="bid-value">{{ bid[1] }}</span>
-		</li>
+		<tr>
+			<td class="bid-name">{{ bid[0] }}</td>
+			<td class="bid-value">{{ (100 * bid[1]) | round | int }}</td>
+			<td class="bid-value">{{ (100 * (1 - bid[1])) | round | int }}</td>
+		</tr>
 	{% endfor %}
-	</ol>
+	</table>
 </div>
