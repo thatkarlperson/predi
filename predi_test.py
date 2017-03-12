@@ -27,7 +27,7 @@ class PrediTest(unittest.TestCase):
                 'Cathy': -19,
                 'Drew': 17}
         for player, score in rank:
-            diff = book[player] - score
+            diff = abs(book[player] - score)
             self.assertLess(diff, 1, "{} diff too big {}".format(player, diff))
 
 
