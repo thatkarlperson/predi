@@ -15,6 +15,26 @@ m.Resolve(True)
 
 
 @app.route('/')
-def show():
+def testMarket():
     return render_template('market.html', market=m)
+
+
+@app.route('/markets', methods=['GET'])
+def listAll():
+    return 'nope'
+
+
+@app.route('/markets', methods=['POST'])
+def createMarket():
+    return 'nope'
+
+
+@app.route('/market/<int:market_id>', methods=['GET'])
+def showMarket(market_id):
+    return 'nope'
+
+
+@app.route('/market/<int:market_id>', methods=['POST'])
+def createBid(market_id):
+    return 'nope'
 
