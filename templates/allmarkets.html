@@ -1,0 +1,7 @@
+<!doctype html>
+<title>All Markets</title>
+{% for mkt in [0, 1] %}
+<iframe src="{{ url_for("showMarket", market_id=mkt) }}"</iframe>
+<hr>
+{% endfor %}
+
