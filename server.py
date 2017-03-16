@@ -11,7 +11,7 @@ m.Bid('Amy', 0.8)
 m.Bid('Cathy', 0.7)
 m.Bid('Bob', 0.8)
 m.Bid('Drew', 0.9)
-m.Resolve(True)
+# m.Resolve(True)
 
 
 @app.route('/')

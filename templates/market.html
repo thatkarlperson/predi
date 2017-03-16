@@ -1,19 +1,27 @@
 <!doctype html>
 <title>Market - {{ market.name }}</title>
+<link rel=stylesheet type=text/css href="static/style.css">
 <div class="market-{{ market.state }}">
 	<h2 class="market-name">{{ market.name }}</h2>
 	<table>
 		<tr>
 			<th>Name</th>
-			<th>T</th>
-			<th>F</th>
+			<th class="value">T</th>
+			<th class="value">F</th>
 		</tr>
 	{% for bid in market.bids %}
-		<tr>
-			<td class="bid-name">{{ bid[0] }}</td>
-			<td class="bid-value">{{ (100 * bid[1]) | round | int }}</td>
-			<td class="bid-value">{{ (100 * (1 - bid[1])) | round | int }}</td>
+		<tr class="bid">
+			<td class="name">{{ bid[0] }}</td>
+			<td class="value">{{ (100 * bid[1]) | round | int }}</td>
+			<td class="value">{{ (100 * (1 - bid[1])) | round | int }}</td>
 		</tr>
 	{% endfor %}
+	{% if market.state == 'open' %}
+		<tr class="form">
+			<td class="submit"><button type=submit>Bid:</button></td>
+			<td class="value"><input type=number></input></td>
+			<td class="value"><input type=number></input></td>
+		</tr>
+	{% endif %}
 	</table>
 </div>
